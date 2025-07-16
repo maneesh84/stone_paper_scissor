@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stone_Paper_Sissor</title>
+</head>
+<link rel="stylesheet" href="style.css">
+<body>
+    
+    <h1 class="name">Stone Paper Scissor Game</h1>
+    <div class="container">
+        
+        
+        <button class="btn" onclick="
+            let computer = computerchoice();
+            let result= playgame('Stone', computer);
+            disp('Stone',computer,result);
+            ">Stone</button>
+        <button class="btn" onclick="
+            computer = computerchoice();
+            result= playgame('Paper', computer);
+            disp('Paper',computer,result);
+            ">Paper</button>
+        <button class="btn" onclick="
+            computer = computerchoice();
+            result= playgame('Scissor', computer);
+            disp('Scissor',computer,result);
+            ">Scissor</button>
+    </div>
+        
+</body>
+
+<script>
+    function computerchoice(){
+        let temp= Math.random() * 3;
+        if(temp<1){
+            return "Stone";
+        } else if(temp<2){
+            return "Paper";
+        } else {
+            return "Scissor";
+        }
+    }
+
+    function playgame(player, computer){
+        if(player === computer){
+            return "It's a tie!";
+        } else if(
+            (player === "Stone" && computer === "Scissor") ||
+            (player === "Paper" && computer === "Stone") ||
+            (player === "Scissor" && computer === "Paper")
+        ){
+            return "You win!";
+        } else {
+            return "You lose!";
+        }
+    }
+
+    function disp(player, computer, result){
+
+        alert(`Player chose: ${ player}  \n Computer chose: ${computer} \n Result: ${result}`);
+    }
+
+
+
+</script>
+
+
+</html>
