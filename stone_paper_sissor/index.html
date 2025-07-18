@@ -16,22 +16,35 @@
             let computer = computerchoice();
             let result= playgame('Stone', computer);
             disp('Stone',computer,result);
+          
             ">Stone</button>
         <button class="btn" onclick="
             computer = computerchoice();
             result= playgame('Paper', computer);
             disp('Paper',computer,result);
+  
             ">Paper</button>
         <button class="btn" onclick="
             computer = computerchoice();
             result= playgame('Scissor', computer);
             disp('Scissor',computer,result);
+  
             ">Scissor</button>
     </div>
         
 </body>
 
 <script>
+
+    let score = {
+        playerScore : 0,
+        computerScore : 0,
+        tieScore : 0,
+        displayscore : function(){
+            return ` Player Score: ${this.playerScore} \n Computer Score: ${this.computerScore} \n Tie Score: ${this.tieScore}`;
+        }
+    }
+
     function computerchoice(){
         let temp= Math.random() * 3;
         if(temp<1){
@@ -45,21 +58,24 @@
 
     function playgame(player, computer){
         if(player === computer){
+            score.tieScore++;
             return "It's a tie!";
         } else if(
             (player === "Stone" && computer === "Scissor") ||
             (player === "Paper" && computer === "Stone") ||
             (player === "Scissor" && computer === "Paper")
         ){
+            score.playerScore++;
             return "You win!";
         } else {
+            score.computerScore++;
             return "You lose!";
         }
     }
 
     function disp(player, computer, result){
 
-        alert(`Player chose: ${ player}  \n Computer chose: ${computer} \n Result: ${result}`);
+        alert(`Player chose: ${ player}  \n Computer chose: ${computer} \n Result: ${result}\n\n${score.displayscore()} `);
     }
 
 
