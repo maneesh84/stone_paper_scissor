@@ -30,20 +30,36 @@
             disp('Scissor',computer,result);
   
             ">Scissor</button>
+        
+        
+    </div>
+    <div class="reset">
+        <button class="reset-btn" onclick="
+            localStorage.clear()
+            reset()">Clear Score</button>
     </div>
         
 </body>
 
 <script>
-
-    let score = {
-        playerScore : 0,
-        computerScore : 0,
-        tieScore : 0,
-        displayscore : function(){
-            return ` Player Score: ${this.playerScore} \n Computer Score: ${this.computerScore} \n Tie Score: ${this.tieScore}`;
+    let scorestr=localStorage.getItem('score');
+    let score;
+    reset(scorestr);
+    function reset(scorestr){
+        score= scorestr ? JSON.parse(scorestr) : {
+            playerScore : 0,
+            computerScore : 0,
+            tieScore : 0,
+                
+        };
+        score.displayscore = function(){
+            return `Player Score: ${this.playerScore} \nComputer Score: ${this.computerScore} \nTie Score: ${this.tieScore}`;
         }
     }
+    
+
+    
+
 
     function computerchoice(){
         let temp= Math.random() * 3;
@@ -74,6 +90,7 @@
     }
 
     function disp(player, computer, result){
+        localStorage.setItem('score', JSON.stringify(score));
 
         alert(`Player chose: ${ player}  \n Computer chose: ${computer} \n Result: ${result}\n\n${score.displayscore()} `);
     }
