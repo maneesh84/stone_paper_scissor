@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,97 +8,108 @@
 </head>
 <link rel="stylesheet" href="style.css">
 <body>
-    
-    <h1 class="name">Stone Paper Scissor Game</h1>
-    <div class="container">
+    <main class="game-wrapper">
+        <header>
+            <h1 class="name">Stone Paper Scissors</h1>
+            <p>Choose your element to begin</p>
+        </header>
+
+        <div class="container">
+            <button class="btn" onclick="
+                let computer = computerchoice();
+                let result= playgame('Stone', computer);
+                disp('Stone',computer,result);
+                ">
+                <span class="icon">🪨</span>
+                Stone
+            </button>
+            <button class="btn" onclick="
+                computer = computerchoice();
+                result= playgame('Paper', computer);
+                disp('Paper',computer,result);
+                ">
+                <span class="icon">📄</span>
+                Paper
+            </button>
+            <button class="btn" onclick="
+                computer = computerchoice();
+                result= playgame('Scissor', computer);
+                disp('Scissor',computer,result);
+                ">
+                <span class="icon">✂️</span>
+                Scissor
+            </button>
+        </div>
+
+        <div class="display">
+            <h3 id="player"></h3>
+            <h3 id="computer"></h3>
+            <h3 id="result"></h3>
+            <h3 id="score"></h3>
+        </div>
+
+        <div class="reset">
+            <button class="reset-btn" onclick="
+                localStorage.clear();
+                reset();
+                ">Restart Game</button>
+        </div>
+    </main>
+
+    <script>
         
-        
-        <button class="btn" onclick="
-            let computer = computerchoice();
-            let result= playgame('Stone', computer);
-            disp('Stone',computer,result);
-          
-            ">Stone</button>
-        <button class="btn" onclick="
-            computer = computerchoice();
-            result= playgame('Paper', computer);
-            disp('Paper',computer,result);
-  
-            ">Paper</button>
-        <button class="btn" onclick="
-            computer = computerchoice();
-            result= playgame('Scissor', computer);
-            disp('Scissor',computer,result);
-  
-            ">Scissor</button>
-        
-        
-    </div>
-    <div class="reset">
-        <button class="reset-btn" onclick="
-            localStorage.clear()
-            reset()">Clear Score</button>
-    </div>
-        
+        let scorestr=localStorage.getItem('score');
+        let score;
+        reset(scorestr);
+        function reset(scorestr){
+            score= scorestr ? JSON.parse(scorestr) : {
+                playerScore : 0,
+                computerScore : 0,
+                tieScore : 0,
+            };
+            score.displayscore = function(){
+                return `Player Score: ${this.playerScore} \nComputer Score: ${this.computerScore} \nTie Score: ${this.tieScore}`;
+            }
+            
+            disp();
+           
+        }
+
+        function computerchoice(){
+            let temp= Math.random() * 3;
+            if(temp<1){
+                return "Stone";
+            } else if(temp<2){
+                return "Paper";
+            } else {
+                return "Scissor";
+            }
+        }
+
+        function playgame(player, computer){
+            if(player === computer){
+                score.tieScore++;
+                return "It's a tie!";
+            } else if(
+                (player === "Stone" && computer === "Scissor") ||
+                (player === "Paper" && computer === "Stone") ||
+                (player === "Scissor" && computer === "Paper")
+            ){
+                score.playerScore++;
+                return "You win!";
+            } else {
+                score.computerScore++;
+                return "You lose!";
+            }
+        }
+
+        function disp(player, computer, result){
+            localStorage.setItem('score', JSON.stringify(score));
+            
+            document.querySelector('#player').innerText = player? `You chose: ${player}` : '';
+            document.querySelector('#computer').innerText = computer ? `Computer chose: ${computer}` : '';
+            document.querySelector('#result').innerText = result ? `Result: ${result}` : 'Awaiting your move...';
+            document.querySelector('#score').innerText = score.displayscore();
+        }
+    </script>
 </body>
-
-<script>
-    let scorestr=localStorage.getItem('score');
-    let score;
-    reset(scorestr);
-    function reset(scorestr){
-        score= scorestr ? JSON.parse(scorestr) : {
-            playerScore : 0,
-            computerScore : 0,
-            tieScore : 0,
-                
-        };
-        score.displayscore = function(){
-            return `Player Score: ${this.playerScore} \nComputer Score: ${this.computerScore} \nTie Score: ${this.tieScore}`;
-        }
-    }
-    
-
-    
-
-
-    function computerchoice(){
-        let temp= Math.random() * 3;
-        if(temp<1){
-            return "Stone";
-        } else if(temp<2){
-            return "Paper";
-        } else {
-            return "Scissor";
-        }
-    }
-
-    function playgame(player, computer){
-        if(player === computer){
-            score.tieScore++;
-            return "It's a tie!";
-        } else if(
-            (player === "Stone" && computer === "Scissor") ||
-            (player === "Paper" && computer === "Stone") ||
-            (player === "Scissor" && computer === "Paper")
-        ){
-            score.playerScore++;
-            return "You win!";
-        } else {
-            score.computerScore++;
-            return "You lose!";
-        }
-    }
-
-    function disp(player, computer, result){
-        localStorage.setItem('score', JSON.stringify(score));
-
-        alert(`Player chose: ${ player}  \n Computer chose: ${computer} \n Result: ${result}\n\n${score.displayscore()} `);
-    }
-
-
-
-</script>
-
-
-</html>
